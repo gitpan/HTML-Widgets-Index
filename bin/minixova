@@ -1,0 +1,154 @@
+#!/usr/bin/perl -w
+
+use strict;
+
+use DBI;
+use File::Copy;
+use Getopt::Long;
+
+my ($DSN,$HOME,$TABLE)=('DBI:mysql:web_index','/var/www/html'
+				,'index_items');
+my $DEBUG=0;
+my ($USERNAME,$PASSWORD) = ('','');
+my ($USAGE) = $0 =~ m#.*/(.*)#;
+
+my $VERSION = '0.01';
+
+my $ME = $0;
+$ME =~ s#.*/##;
+
+$USAGE.=" [--help] [--dsn=$DSN] [--home=$HOME] [--table=$TABLE] [--debug]".
+        " [--version]";
+
+{
+	my $HELP;
+    my $version;
+	GetOptions(
+		    'dsn=s' => \$DSN,
+		    'home=s'=> \$HOME,
+		    'help'  => \$HELP,
+		  'table=s' => \$TABLE,
+            'debug' => \$DEBUG,
+          'version' => \$version
+	);
+	die "$USAGE\n" if $HELP
+				|| (!defined $DSN || !defined $HOME);
+
+    if ($version) {
+        print "$ME $VERSION\n";
+        exit;
+    }
+}
+
+my $dbh = DBI->connect($DSN,$USERNAME,$PASSWORD,{RaiseError=>1,PrintError=>0})
+ or die "$DBI::errstr\n$DSN\n";
+
+my ($RUN_DIR) = $0 =~ m#(.*)/#;
+
+
+create_table();
+create_javascript();
+create_autohandler();
+create_mason_base();
+empty_table();
+
+chdir $HOME or die "$! $HOME";
+insert_table();
+
+########################################################################
+
+sub create_table {
+	if ($DSN =~ /^DBI:mysql/i) {
+		create_table_mysql();
+	} else {
+		die "Can't create table for non mysql databases\n";
+	}
+	
+}
+
+sub create_table_mysql {
+	eval {
+		$dbh->do("CREATE TABLE $TABLE (
+  id int(11) NOT NULL auto_increment,
+  uri varchar(150) NOT NULL default '',
+  text varchar(150) NOT NULL default '',
+  level int(11) default NULL,
+  id_parent int(11) NOT NULL default '0',
+  ordern varchar(100) NOT NULL default '100',
+  PRIMARY KEY  (id))");
+	};
+	return if $@ =~ /already exists/;
+	die $@ if $@;
+}
+
+sub create_javascript {
+	unless (-d "$HOME/javascript") {
+		mkdir "$HOME/javascript" or die "$! $HOME/javascript\n";
+	}
+	return if -f "$HOME/javascript/dhtml_func.js";
+	copy("$RUN_DIR/../Javascript/dhtml_func.js", "$HOME/javascript")
+		or die $!;
+}
+
+sub create_autohandler {
+	return if -f "$HOME/autohandler";
+	copy ("$RUN_DIR/../eg/autohandler" , $HOME);
+}
+
+sub create_mason_base {
+	return if -f "$HOME/menu/menu.mc";
+	mkdir "$HOME/menu";
+	copy ("$RUN_DIR/../eg/menu.mc" , "$HOME/menu");
+#    copy ("$RUN_DIR/../eg/menu_format.mc" , "$HOME/menu")
+#        or die "$! $RUN_DIR/../eg/menu_format\n";
+}
+
+sub empty_table {
+	$dbh->do("DELETE FROM $TABLE") or die $DBI::errstr;
+}
+
+sub insert_table {
+	my $dir = (shift or $HOME);
+    warn "Entering in $dir\n" if $DEBUG;
+	my $id_parent = (shift or 0);
+	my @next;
+    chdir $dir;
+	opendir DIR ,"." or die "$! $dir";
+	while (my $entry = readdir(DIR)) {
+		next if $entry =~ /^\.+$/;
+		if ( (-d "$entry" && -e "$entry/index.html" )
+			|| ( $entry =~ /.*html$/ && $entry ne 'index.html')
+			) {
+			my $id = insert_file($entry,$id_parent);
+			push @next,([$entry,$id])
+				if -d $entry;
+		}
+	}
+	close DIR;
+	foreach my $dir (@next) {
+		insert_table(@$dir);
+	}
+    chdir ".." or die "$! ..";
+}
+
+sub insert_file {
+	return insert_file_mysql(@_);
+}
+
+sub insert_file_mysql {
+	my ($file,$id_parent) = (@_,0);
+	my ($text) = $file =~ m#(.+?)(\.html)?/?$#;
+#    $file .= '/' if -d $file;
+	$text =~ s/_+/ /g;
+#	$file =~ s/$HOME//;
+	die "Can't find text in $file\n" unless
+		defined $text;
+	$dbh->do("INSERT INTO $TABLE ".
+			" (uri,text,id_parent)".
+			" values('$file','$text',$id_parent)");
+	my $sth = $dbh->prepare("SELECT last_insert_id() ");
+	$sth->execute;
+	my ($id) = $sth->fetchrow;
+	$sth->finish;
+	return $id;
+}

@@ -1,0 +1,29 @@
+<title>
+	<% $menu->title %>
+</title>
+
+<body>
+
+<h1>
+	<% $menu->title %>
+</h1>
+
+<table>
+	<tr>
+		<td valign="top">
+            <table border="0" cellspacing="0" cellpadding="0">
+			    <% $menu->get_html %>
+            </table>
+		</td>
+
+		<td valign="top">
+			<% $menu->get_path %>
+            <hr>
+			<% $m->call_next %>
+		</td>
+	</tr>
+</table>
+
+<%init>
+	my $menu = $m->comp("menu/menu.mc");
+</%init>

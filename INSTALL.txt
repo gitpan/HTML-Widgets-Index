@@ -1,0 +1,41 @@
+INSTALLATION
+
+In the "./eg" directory you can find the needed files to set up
+a simple working generated index.
+
+You'll also need to set up
+Apache and Mason correctly before you can use module.
+
+In a few steps:
+
+1.- Install and set up a working apache server
+2.- Install and set up HTML::Mason
+	This module needs to store data as user apache, so you should
+	give him access to the right directory (check your Mason docs!)
+	The default looks like /etc/httpd/mason, so you should do:
+	# mkdir /etc/httpd/mason
+	# chown apache:apache /etc/httpd/mason
+3.- Create database web_index on the MySQL server, giving the user
+    apache select access to it.
+	# mysql
+	mysql> grant select on web_index.* to apache;
+4.- Create and populate a table following the directives you can find
+    in Index.pm POD (exec perldoc Index.pm), and set up menu.mc in the
+    "./eg" directory to fit your needs. A sample sql command set to
+    create a sample DB is provided in the eg dir (sample.sql).
+5.- Copy menu.mc and autohandler to your server's target dir.
+6.- Start MySQL and Apache, and give it a go.
+
+
+
+What to do if something goes wrong:
+
+1.- First of all, DON'T PANIC!
+2.- Check your apache logs, or even better, monitor them as you start
+    the server and make the requests:
+	# tail -f /var/log/httpd/error_log &
+	# /etc/rc.d/init.d/httpd restart
+3.- Try to test every component separately: Apache, Perl, Mason and
+    MySQL. Try to access the MySQL database as user apache and 
+    execute a SELECT * FROM <yourtable> sql statement to check
+    access permissions.

@@ -1,0 +1,10 @@
+############ Added by HTML::Widgets::Search  ####
+#                                               #
+
+<FilesMatch "\.html$">
+	SetHandler perl-script
+	PerlHandler HTML::Mason::ApacheHandler
+</FilesMatch>
+
+#                                               #
+#### End of addition by HTML::Widgets::Search  ##

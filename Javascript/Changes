@@ -1,0 +1,6 @@
+Revision history for Perl extension HTML::Widgets::Index::Javascript.
+
+0.01  Mon Apr  1 18:25:01 2002
+	- original version; created by h2xs 1.20 with options
+		-X -n HTML::Widgets::Index::Javascript
+

@@ -1,0 +1,6 @@
+Revision history for Perl extension HTML::Widgets::Index::Format.
+
+0.01  Wed Oct 17 12:13:53 2001
+	- original version; created by h2xs 1.21 with options
+		-X -n HTML::Widgets::Index::Format
+

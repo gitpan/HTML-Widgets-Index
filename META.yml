@@ -1,0 +1,12 @@
+# http://module-build.sourceforge.net/META-spec.html
+#XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
+name:         HTML-Widgets-Index
+version:      0.5
+version_from: Index.pm
+installdirs:  site
+requires:
+    DBD::mysql:                    0.01
+    HTTP::BrowserDetect:           0.97
+
+distribution_type: module
+generated_by: ExtUtils::MakeMaker version 6.17

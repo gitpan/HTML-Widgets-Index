@@ -1,0 +1,2 @@
+- treu javascript dels 2 ultims nivells quan render_children esta activat.
+	Nomes l'hauria de treure de l'ultim.
