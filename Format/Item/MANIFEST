@@ -2,5 +2,4 @@ Changes
 Item.pm
 Makefile.PL
 MANIFEST
-README
 t/00_base.t

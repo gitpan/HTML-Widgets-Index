@@ -6,8 +6,9 @@ use vars qw($VERSION @ISA @EXPORT @EXPORT_OK $AUTOLOAD $DEBUG $DEBUG_HERE
             );
 #################################################################
 #
-$VERSION="0.5";
+$VERSION="0.6";
 
+# 0.6 : README was missing
 # 0.5 : Fixed small bugs, added render_nth_parents
 #        Changed to Format.pm 0.02
 #        Updated all test results to match new indentation in

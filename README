@@ -1,0 +1,38 @@
+HTML/Widgets/Index version 0.06
+======================================
+
+This module renders a menu in HTML. It loads the information from a
+database and can be highly customized to suit your needs.
+
+It can display a sidebar menu and the breadcrumbs for the page requested.
+It comes with examples of how to render javascript and HTML to make web
+site navigation easier for the users.
+
+
+INSTALLATION
+
+To install this module type the following:
+
+   perl Makefile.PL
+   make
+   make test
+   make install
+
+Further configuration and installation information can be read from
+the file INSTALL.txt
+
+DEPENDENCIES
+
+This module requires these other modules and libraries:
+
+HTTP::BrowserDetect-0.97 DBD::mysql-0.01 
+
+COPYRIGHT AND LICENCE
+
+Put the correct copyright and licence information here.
+
+Copyright (C) 2001-2004 Francesc Guasch Ortiz
+
+This program is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
