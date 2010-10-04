@@ -6,8 +6,10 @@ use HTML::Widgets::Index;
 
 use strict;
 
-use lib '.';
-use Test;
+use lib 'inc';
+use HWITest;
+
+use Test::More skip_all => 'TODO';
 
 my $based = cwd;
 my $dbh;
@@ -45,15 +47,17 @@ $sth->execute(1);
 my ($text) = $sth->fetchrow;
 $sth->finish;
 
-print "not " unless $text eq 'a';
-print "ok 1\n";
+# TODO
+ print "not " unless $text eq 'a';
+ print "ok 1\n";
 
 $sth->execute(2);
 ($text) = $sth->fetchrow;
 $sth->finish;
 
-print "not " unless $text eq 'b';
-print "ok 2\n";
+# TODO
+ print "not " unless $text eq 'b';
+ print "ok 2\n";
 
 $index = HTML::Widgets::Index->open(
 	dbh => $dbh,

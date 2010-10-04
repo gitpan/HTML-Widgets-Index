@@ -19,9 +19,10 @@ use strict;
 use Carp;
 use DBI;
 
-use lib '.';
 
-use Test;
+use lib 'inc';
+
+use HWITest;
 my $dbh;
 
 eval {

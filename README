@@ -21,6 +21,15 @@ To install this module type the following:
 Further configuration and installation information can be read from
 the file INSTALL.txt
 
+OPTIONAL DB TESTING
+
+There are some tests that require access to a mysql database. They are skipped if
+none is found in localhost. You can set an environment variable if you have a mysql
+server somewhere else:
+
+    export DSN_TEST="DBI:mysql:hostname=dbserver;database=test
+	make test
+
 DEPENDENCIES
 
 This module requires these other modules and libraries:

@@ -1,2 +1,7 @@
-- treu javascript dels 2 ultims nivells quan render_children esta activat.
-	Nomes l'hauria de treure de l'ultim.
+- It renders the last 2 levels of javascript when render_children active.
+  It should only show the last one.
+
+- Upgrade test suite to Test::More
+
+- t/50 and t/70 have failed tests. Check why.
+

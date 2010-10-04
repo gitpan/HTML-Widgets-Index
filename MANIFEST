@@ -17,7 +17,7 @@ MANIFEST
 README
 Makefile.PL
 TODO.txt
-Test.pm
+inc/HWITest.pm
 Item/MANIFEST
 Item/Changes
 Item/Item.pm
